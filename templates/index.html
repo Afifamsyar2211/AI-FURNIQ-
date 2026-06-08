@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI-FURNIQ | Smart Manufacturing System</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #2563eb; --background: #f1f5f9; --text-main: #0f172a;
+            --success-bg: #dcfce7; --success-text: #166534;
+            --danger-bg: #fee2e2; --danger-text: #991b1b;
+            --autocad-blue: #0ea5e9; --cad-bg: #1e293b;
+        }
+        body { font-family: 'Inter', sans-serif; background-color: var(--background); color: var(--text-main); margin: 0; padding: 40px 20px; }
+        .container { max-width: 1100px; margin: 0 auto; }
+        .header { text-align: center; margin-bottom: 40px; }
+        .header h1 { color: var(--primary); font-size: 2.5rem; margin: 0; }
+        .card { background: #fff; border-radius: 16px; padding: 30px; margin-bottom: 30px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); }
+        input[type="text"], input[type="file"] { width: 100%; padding: 14px; margin-top: 8px; border: 1px solid #e2e8f0; border-radius: 8px; box-sizing: border-box; }
+        .btn-submit { background: var(--primary); color: white; padding: 16px; width: 100%; border: none; border-radius: 8px; font-weight: 600; cursor: pointer; margin-top: 20px; font-size: 16px; }
+        .btn-submit:hover { background: #1d4ed8; }
+
+        .result-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #e2e8f0; padding-bottom: 20px; margin-bottom: 25px; }
+        .btn-action { padding: 10px 20px; text-decoration: none; border-radius: 8px; font-weight: 600; font-size: 0.9rem; margin-left: 10px; display: inline-block; }
+        .btn-pdf { color: #ef4444; border: 1px solid #ef4444; }
+        .btn-cad { background-color: var(--autocad-blue); color: white; }
+
+        .blueprint-container { background: var(--cad-bg); padding: 24px; border-radius: 12px; text-align: center; margin-bottom: 30px; }
+        .blueprint-img { max-width: 100%; border: 1px solid #475569; border-radius: 6px; }
+
+        /* --- AI CONFIDENCE SCORE CSS --- */
+        .confidence-box {
+            background: #fff; padding: 15px 20px; border-radius: 12px; margin-bottom: 20px;
+            border: 1px solid #e2e8f0; display: flex; align-items: center; gap: 20px;
+        }
+        .score-circle {
+            width: 60px; height: 60px; border-radius: 50%; background: var(--background);
+            display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 1.2rem; border: 4px solid;
+        }
+        .score-details h4 { margin: 0 0 5px 0; }
+        .score-details p { margin: 0; font-size: 0.85rem; color: #64748b; }
+
+        .grid-container { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 24px; }
+        .info-card { background: #f8fafc; padding: 24px; border-radius: 12px; border: 1px solid #e2e8f0; }
+        .validator-list li { padding: 8px; margin-bottom: 5px; border-radius: 4px; font-size: 0.9rem; }
+        .alert { background: var(--danger-bg); color: var(--danger-text); }
+        .success { background: var(--success-bg); color: var(--success-text); }
+
+        #loading-overlay { display: none; text-align: center; margin: 20px 0; }
+        .spinner { border: 3px solid #e2e8f0; border-top: 3px solid var(--primary); border-radius: 50%; width: 40px; height: 40px; animation: spin 0.8s linear infinite; margin: 0 auto; }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+    </style>
+    <script>
+        function showLoading() {
+            document.querySelector('.btn-submit').innerHTML = "Processing...";
+            document.getElementById('loading-overlay').style.display = 'block';
+        }
+    </script>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🛋️ AI-FURNIQ</h1>
+            <p>Smart Furniture Manufacturing Planning System</p>
+        </div>
+
+        <div class="card">
+            <form method="POST" enctype="multipart/form-data" onsubmit="showLoading()">
+                <label>1. Design Prompt</label>
+                <input type="text" name="furniture_request" placeholder="e.g. Modern study desk..." value="{{ user_input }}">
+                <label style="margin-top:15px; display:block;">2. Reference Image (Optional)</label>
+                <input type="file" name="furniture_image" accept="image/*">
+                <button type="submit" class="btn-submit">🚀 Generate Design</button>
+            </form>
+            <div id="loading-overlay"><div class="spinner"></div><p>AI is thinking...</p></div>
+        </div>
+
+        {% if output %}
+        <div class="card" style="border-top: 5px solid var(--primary);">
+            <div class="result-header">
+                <h2>Result: {{ output.design_name }}</h2>
+                <div>
+                    <a href="/export_pdf" target="_blank" class="btn-action btn-pdf">📄 PDF Report</a>
+                    <a href="/download_dxf" target="_blank" class="btn-action btn-cad">🏗️ Download AutoCAD</a>
+                </div>
+            </div>
+
+            <div class="confidence-box">
+                <div class="score-circle" style="
+                    border-color: {% if output.confidence_score >= 80 %}#16a34a{% elif output.confidence_score >= 50 %}#ca8a04{% else %}#dc2626{% endif %};
+                    color: {% if output.confidence_score >= 80 %}#16a34a{% elif output.confidence_score >= 50 %}#ca8a04{% else %}#dc2626{% endif %};">
+                    {{ output.confidence_score }}%
+                </div>
+                <div class="score-details">
+                    <h4>🧠 AI Confidence Score</h4>
+                    <p><strong>Reason:</strong> {{ output.confidence_reason }}</p>
+                </div>
+            </div>
+
+            {% if cad_preview_url %}
+            <div class="blueprint-container">
+                <div style="margin-bottom:10px; color:#94a3b8; display:flex; justify-content:space-between;">
+                    <span>🎨 <strong>AI Concept Blueprint</strong> (DALL-E 3)</span>
+                    <span style="font-size:0.8rem;">Visual Concept Only</span>
+                </div>
+                <img src="data:image/png;base64,{{ cad_preview_url }}" class="blueprint-img">
+            </div>
+            {% endif %}
+
+            <div style="margin-bottom: 20px;">
+                <h3>🏭 Validator Status</h3>
+                <ul class="validator-list" style="padding:0; list-style:none;">
+                    {% for msg in output.validation %}
+                        <li class="{{ 'alert' if 'Isu' in msg or 'Amaran' in msg else 'success' }}">{{ msg }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+
+            <div class="grid-container">
+                <div class="info-card">
+                    <h3>🛠️ Components</h3>
+                    <ul style="padding-left:20px;">
+                        {% for c in output.components %}<li>{{ c }}</li>{% endfor %}
+                    </ul>
+                </div>
+                <div class="info-card">
+                    <h3>💰 Cost (BOM)</h3>
+                    <ul style="padding-left:20px;">
+                        {% for b in output.bom %}<li>{{ b }}</li>{% endfor %}
+                    </ul>
+                    <h3 style="text-align:right; color:var(--primary);">{{ output.total_cost }}</h3>
+                </div>
+            </div>
+
+            <div class="info-card" style="margin-top:20px; border-left:4px solid var(--primary);">
+                <h3>🔧 Assembly Instructions</h3>
+                <ol>{% for step in output.steps %}<li>{{ step }}</li>{% endfor %}</ol>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+</body>
+</html>

@@ -1,0 +1,74 @@
+{
+  "table": {
+    "min_height": 40,
+    "max_height": 130,
+    "max_length": 350,
+    "max_width": 150,
+    "materials": ["wood", "metal", "plastic", "glass", "marble", "stone", "mdf", "plywood"],
+    "components": ["tabletop", "leg", "frame", "drawer", "shelf", "wheel"]
+  },
+  "chair": {
+    "min_height": 30,
+    "max_height": 160,
+    "max_width": 150,
+    "max_length": 150,
+    "materials": ["wood", "plastic", "fabric", "metal", "leather", "steel", "rattan", "foam", "cushion"],
+    "components": ["seat", "backrest", "leg", "armrest", "cushion", "frame", "wheel", "headrest"]
+  },
+  "cabinet": {
+    "min_height": 50,
+    "max_height": 250,
+    "max_width": 300,
+    "max_length": 100,
+    "materials": ["wood", "metal", "plastic", "glass", "aluminum", "mdf", "chipboard", "plywood"],
+    "components": ["door", "shelf", "panel", "handle", "frame", "drawer", "hinge"]
+  },
+  "shelf": {
+    "min_height": 30,
+    "max_height": 300,
+    "max_width": 300,
+    "max_length": 100,
+    "materials": ["wood", "metal", "plastic", "glass", "mdf", "plywood"],
+    "components": ["shelf_board", "frame", "support", "bracket", "back_panel"]
+  },
+  "bed": {
+    "min_height": 20,
+    "max_height": 200,
+    "max_width": 220,
+    "max_length": 250,
+    "materials": ["wood", "metal", "fabric", "leather", "mdf", "plywood"],
+    "components": ["bed_frame", "headboard", "footboard", "slat", "leg", "support_beam"]
+  },
+  "sofa": {
+    "min_height": 40,
+    "max_height": 120,
+    "max_width": 150,
+    "max_length": 400,
+    "materials": ["fabric", "leather", "wood", "metal", "foam", "sponge", "cotton"],
+    "components": ["seat_cushion", "back_cushion", "armrest", "frame", "leg", "spring"]
+  },
+  "wardrobe": {
+    "min_height": 100,
+    "max_height": 300,
+    "max_width": 400,
+    "max_length": 100,
+    "materials": ["wood", "glass", "metal", "mirror", "plywood", "mfc", "chipboard", "hdf", "mdf", "aluminium", "particle board"],
+    "components": ["door", "hanging_rod", "shelf", "drawer", "handle", "frame", "sliding_track"]
+  },
+  "shoe_rack": {
+    "min_height": 30,
+    "max_height": 200,
+    "max_width": 150,
+    "max_length": 60,
+    "materials": ["wood", "metal", "plastic", "fabric", "plywood"],
+    "components": ["shelf", "frame", "door", "leg", "ventilation_panel"]
+  },
+  "tv_console": {
+    "min_height": 30,
+    "max_height": 80,
+    "max_width": 300,
+    "max_length": 60,
+    "materials": ["wood", "metal", "glass", "mdf", "plywood"],
+    "components": ["top_panel", "shelf", "drawer", "cable_hole", "leg", "door"]
+  }
+}

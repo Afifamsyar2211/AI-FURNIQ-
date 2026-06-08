@@ -1,0 +1,37 @@
+component,unit_price_myr,category
+leg,15.00,wood
+kaki,15.00,wood
+surface,45.00,wood
+top,45.00,wood
+seat,30.00,wood
+tempat duduk,30.00,wood
+backrest,25.00,wood
+penandar belakang,25.00,wood
+armrest,20.00,wood
+pemegang tangan,20.00,wood
+frame,35.00,structure
+rangka,35.00,structure
+screw,0.50,hardware
+skru,0.50,hardware
+glue,12.00,consumable
+gam,12.00,consumable
+varnish,25.00,consumable
+syelek,25.00,consumable
+sandpaper,2.50,consumable
+kertas pasir,2.50,consumable
+plywood,60.00,sheet
+papan,60.00,sheet
+door,55.00,wood
+pintu,55.00,wood
+handle,8.00,hardware
+pemegang,8.00,hardware
+hinge,4.50,hardware
+engsel,4.50,hardware
+shelf,22.00,wood
+rak,22.00,wood
+drawer,40.00,wood
+laci,40.00,wood
+mirror,80.00,glass
+cermin,80.00,glass
+cushion,35.00,fabric
+kusyen,35.00,fabric
